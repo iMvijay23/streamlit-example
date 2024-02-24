@@ -13,28 +13,22 @@ forums](https://discuss.streamlit.io).
 In the meantime, below is an example of what you can do with just a few lines of code:
 """
 
-num_points = st.slider("Number of points in spiral", 1, 10000, 1100)
-num_turns = st.slider("Number of turns in spiral", 1, 300, 31)
 
-indices = np.linspace(0, 1, num_points)
-theta = 2 * np.pi * num_turns * indices
-radius = indices
+# Function to count CpG in a DNA sequence
+def count_cpg(dna_sequence):
+    return dna_sequence.upper().count('CG')
 
-x = radius * np.cos(theta)
-y = radius * np.sin(theta)
+"""
+# DNA CpG Site Counter
 
-df = pd.DataFrame({
-    "x": x,
-    "y": y,
-    "idx": indices,
-    "rand": np.random.randn(num_points),
-})
+This tool counts the number of CpG sites in a given DNA sequence. CpG sites are regions in DNA where a cytosine nucleotide is followed by a guanine nucleotide in the linear sequence of bases along its 5' → 3' direction.
+"""
 
-st.altair_chart(alt.Chart(df, height=700, width=700)
-    .mark_point(filled=True)
-    .encode(
-        x=alt.X("x", axis=None),
-        y=alt.Y("y", axis=None),
-        color=alt.Color("idx", legend=None, scale=alt.Scale()),
-        size=alt.Size("rand", legend=None, scale=alt.Scale(range=[1, 150])),
-    ))
+# User input for DNA sequence
+dna_sequence = st.text_area("Enter DNA Sequence", "CGATCGCGGTCG")
+
+# Counting CpG sites
+cpg_count = count_cpg(dna_sequence)
+
+# Displaying the result
+st.write(f"The number of CpG sites in the given sequence is: {cpg_count}")
